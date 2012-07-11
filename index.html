@@ -1,0 +1,60 @@
+<html>
+
+<head>
+	<script>
+	</script>
+</head>
+
+<body>
+
+	<canvas id="c"
+	width="400"
+	height="200"></canvas>
+
+
+<script>
+
+window.requestAnimFrame = (function(){
+  return  window.requestAnimationFrame       || 
+		  window.webkitRequestAnimationFrame || 
+		  window.mozRequestAnimationFrame    || 
+		  window.oRequestAnimationFrame      || 
+		  window.msRequestAnimationFrame     ||  
+		  function( callback ){
+			window.setTimeout(callback, 1000 / 60);
+		  };
+})();
+
+var canvas = document.getElementById("c");
+var ctx = canvas.getContext("2d");
+var W = window.innerWidth, H = window.innerHeight;
+//canvas.width = W;
+//canvas.height = H;
+
+function paint_canvas() {
+	ctx.fillStyle = "rgba(0,0,0,1)";
+	ctx.fillRect(0,0,W,H);
+}
+
+function update() {
+
+}
+
+function draw() {
+	paint_canvas();
+	update();
+}
+
+function animloop() {
+	draw();
+	requestAnimFrame(animloop);
+}
+
+animloop();
+
+</script>
+
+
+</body>
+
+</html>
