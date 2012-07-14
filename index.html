@@ -8,9 +8,13 @@
 <body>
 
 	<canvas id="c"
-	width="400"
-	height="200"></canvas>
+		width="400"
+		height="200">
+	</canvas>
 
+	<img id="firefox" name="firefox"
+
+	style="position: absolute; left: 100px; top: 100px;" src="firefox.png"></img>
 
 <script>
 
@@ -29,6 +33,14 @@ var canvas = document.getElementById("c");
 var ctx = canvas.getContext("2d");
 var W = window.innerWidth, H = window.innerHeight;
 var panel = null;
+var npanel = null;
+
+function tuple(n1,n2,n3) {
+	this.n1 = n1;
+	this.n2 = n2;
+	this.n3 = n3;
+	return this;
+}
 
 function draw_rect(color, x, y) {
 	ctx.fillStyle = color;
@@ -73,10 +85,13 @@ function animloop() {
 }
 
 function init() {
+	npanel = new Array(10);
 	panel = new Array(10);
 	for(var i=0;i<10;i++) {
 		panel[i] = new Array(20);
+		npanel[i] = new Array(20);
 	}
+
 	for(var i=0;i<20;i++) {
 		for (var j=0;j<10;j++) {
 			var num1 = createRandomNumber(24,63);
@@ -86,6 +101,7 @@ function init() {
 			// cache these?
 			var ts = make_color_string(num1,num2,num3);
 			panel[j][i] = ts;
+			npanel[j][i] = new tuple(num1,num2,num3);
 		}
 	}
 }
@@ -95,12 +111,18 @@ function canvas_click_handler(e) {
 }
 
 function canvas_mousemove_handler(e) {
-	var x = e.x; // absolute x i think
-	var y = e.y;
 	var layerx = e.layerX; // x on canvas
 	var layery = e.layerY; // y on canvas
-	console.log(layerx + " " + layery);
-	// get the current color at that spot
+
+	var row = Math.floor(layery / 20);
+	var col = Math.floor(layerx / 20);
+	
+	//var t = npanel[row][col];
+	//var ti = createRandomNumber(0,10);
+	//if (ti<5) {
+	//	t.num1 += createRandomNumber(0,10);
+	//}
+	//panel[row][col] = make_color_string(t.num1,t.num2,t.num3);
 
 }
 
