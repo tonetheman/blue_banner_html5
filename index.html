@@ -28,6 +28,7 @@ window.requestAnimFrame = (function(){
 var canvas = document.getElementById("c");
 var ctx = canvas.getContext("2d");
 var W = window.innerWidth, H = window.innerHeight;
+var panel = null;
 
 function draw_rect(color, x, y) {
 	ctx.fillStyle = color;
@@ -38,6 +39,10 @@ function createRandomNumber(Min, Max){
   return Math.round((Max-Min) * Math.random() + Min);
 }
 
+function make_color_string(num1,num2,num3) {
+	return "rgb("+num1+","+num2+","+num3+")";	
+}
+
 function paint_canvas() {
 	ctx.fillStyle = "rgba(0,0,0,1)";
 	ctx.fillRect(0,0,W,H);
@@ -45,23 +50,12 @@ function paint_canvas() {
 	// number 1 range from 24 to 63
 	// number 2 range from 95 to 134
 	// number 3 range from 158 to 196
-	function make_color_string(num1,num2,num3) {
-		return "rgb("+num1+","+num2+","+num3+")";	
-	}
 	
-	for(var i=0;i<400;i+=20) {
-		for(var j=0;j<200;j+=20) {
-			
-			var num1 = createRandomNumber(24,63);
-			var num2 = createRandomNumber(95,134);
-			var num3 = createRandomNumber(158,196);
-
-			// cache these?
-			var ts = make_color_string(num1,num2,num3);
-			draw_rect(ts,i,j);
+	for(var i=0;i<20;i++) {
+		for (var j=0;j<10;j++) {
+			draw_rect(panel[j][i],i*20,j*20);
 		}
 	}
-	
 }
 
 function update() {
@@ -78,6 +72,45 @@ function animloop() {
 	requestAnimFrame(animloop);
 }
 
+function init() {
+	panel = new Array(10);
+	for(var i=0;i<10;i++) {
+		panel[i] = new Array(20);
+	}
+	for(var i=0;i<20;i++) {
+		for (var j=0;j<10;j++) {
+			var num1 = createRandomNumber(24,63);
+			var num2 = createRandomNumber(95,134);
+			var num3 = createRandomNumber(158,196);
+
+			// cache these?
+			var ts = make_color_string(num1,num2,num3);
+			panel[j][i] = ts;
+		}
+	}
+}
+
+function canvas_click_handler(e) {
+	//console.log(e.x + " " + e.y);
+}
+
+function canvas_mousemove_handler(e) {
+	var x = e.x; // absolute x i think
+	var y = e.y;
+	var layerx = e.layerX; // x on canvas
+	var layery = e.layerY; // y on canvas
+	console.log(layerx + " " + layery);
+	// get the current color at that spot
+
+}
+
+function init_events() {
+	c.addEventListener("click", canvas_click_handler, false);
+	c.addEventListener("mousemove", canvas_mousemove_handler, false);
+}
+
+init_events();
+init();
 animloop();
 
 </script>
