@@ -37,6 +37,12 @@ var ctx = canvas.getContext("2d");
 var W = window.innerWidth, H = window.innerHeight;
 var panel = null;
 var npanel = null;
+var then = Date.now();
+var shines = []; // shines that are alive
+
+function createRandomNumber(Min, Max){
+  return Math.round((Max-Min) * Math.random() + Min);
+}
 
 function tuple(n1,n2,n3) {
 	this.n1 = n1;
@@ -45,14 +51,24 @@ function tuple(n1,n2,n3) {
 	return this;
 }
 
+function Shine(row,col) {
+	this.duration = createRandomNumber(3,6); // total number of seconds this shines
+	this.row = row;
+	this.col = col;
+	var num1 = createRandomNumber(24,63);
+	var num2 = createRandomNumber(95,134);
+	var num3 = createRandomNumber(158,196);
+
+	this.dest = new tuple(num1,num2,num3);
+	
+	return this;
+}
+
 function draw_rect(color, x, y) {
 	ctx.fillStyle = color;
 	ctx.fillRect(x,y,20,20); // 20 x 20 pixel
 }
 
-function createRandomNumber(Min, Max){
-  return Math.round((Max-Min) * Math.random() + Min);
-}
 
 function make_color_string(num1,num2,num3) {
 	return "rgb("+num1+","+num2+","+num3+")";	
@@ -73,13 +89,26 @@ function paint_canvas() {
 	}
 }
 
-function update() {
+function update(delta) {
+	//console.log(delta);
+	for(var i=0;i<shines.length;i++) {
+		var s = shines[i];
+		if (s==null) continue;
+		s.duration = s.duration - delta;
 
+		if (s.duration<0) {
+			shines[i] = null;
+		}
+	}
 }
 
+
 function draw() {
+	var now = Date.now();
+	var delta = now - then;
 	paint_canvas();
-	update();
+	update(delta/1000);
+	then = now;
 }
 
 function animloop() {
@@ -107,6 +136,9 @@ function init() {
 			npanel[j][i] = new tuple(num1,num2,num3);
 		}
 	}
+
+	shines.push(new Shine(1,1));
+
 }
 
 function canvas_click_handler(e) {
