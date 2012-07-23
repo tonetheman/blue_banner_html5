@@ -1,0 +1,30 @@
+<html>
+<head>
+</head>
+<body>
+	<hr />
+<div id="output"></div>
+<hr />
+
+http://stackoverflow.com/questions/10789422/requestanimationframe-on-iphone
+
+<script>
+var t = document.getElementById("output");
+t.appendChild(document.createTextNode("dbg: "));
+
+if (window.requestAnimationFrame) {
+	t.appendChild(document.createTextNode("window.requestAnimationFrame"));
+} else if (window.webkitRequestAnimationFrame) {
+	t.appendChild(document.createTextNode("window.webkitRequestAnimationFrame"));
+} else if (window.mozRequestAnimationFrame) {
+	t.appendChild(document.createTextNode("window.mozRequestAnimationFrame"));
+} else if (window.oRequestAnimationFrame) {
+	t.appendChild(document.createTextNode("window.oRequestAnimationFrame"));
+}  else if (window.msRequestAnimationFrame) {
+	t.appendChild(document.createTextNode("window.msRequestAnimationFrame"));
+}  else {
+	t.appendChild(document.createTextNode("nothing"));
+} 
+</script>
+</body>
+</html>
